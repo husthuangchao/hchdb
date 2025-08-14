@@ -1,6 +1,6 @@
 # HchDB - Python分布式数据库
 
-基于Python实现的类PolarDB-X分布式数据库，用于学习分布式数据库核心原理。
+基于Python实现的类PolarDB-X分布式数据库。
 
 ## 🏗️ 项目结构
 
