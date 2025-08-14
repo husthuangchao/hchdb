@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
 """
 HchDB 分布式数据库服务器启动入口
+
+这是HchDB项目的主启动文件，负责：
+1. 解析命令行参数
+2. 初始化配置系统
+3. 启动数据库服务器
+4. 处理优雅关闭
+
+Author: husthuangchao
+Date: 2024-08-14
+Version: v0.1.0-day1
 """
 
 import asyncio
