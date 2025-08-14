@@ -1,0 +1,25 @@
+# 核心依赖
+pyyaml>=6.0              # 配置文件解析
+structlog>=23.1.0        # 结构化日志
+click>=8.1.0             # 命令行工具
+asyncio-mqtt>=0.13.0     # 异步消息队列
+
+# 网络和协议
+protobuf>=4.21.0         # X-Protocol序列化
+cryptography>=40.0.0     # SSL/TLS加密
+
+# 监控和指标
+prometheus-client>=0.16.0    # Prometheus指标
+psutil>=5.9.0               # 系统资源监控
+
+# 开发和测试
+pytest>=7.2.0           # 测试框架
+pytest-asyncio>=0.21.0  # 异步测试支持
+pytest-cov>=4.0.0       # 测试覆盖率
+black>=23.0.0            # 代码格式化
+flake8>=6.0.0            # 代码检查
+mypy>=1.0.0              # 类型检查
+
+# 可选依赖 (用于后端存储连接)
+PyMySQL>=1.0.2           # MySQL连接器
+asyncpg>=0.28.0          # PostgreSQL异步连接器

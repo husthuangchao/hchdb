@@ -1,0 +1,143 @@
+# HchDB 开发环境配置
+server:
+  # 服务器基本配置
+  host: "0.0.0.0"
+  
+  # 端口配置 - 模拟PolarDB-X的多端口设计
+  ports:
+    mysql: 3306        # MySQL协议端口
+    management: 3307   # 管理端口
+    internal: 3308     # 集群内部通信端口
+    xprotocol: 33060   # X-Protocol端口
+  
+  # 服务器能力
+  server_version: "8.0.0-hchdb-dev"
+  protocol_version: 10
+  
+  # SSL配置
+  ssl:
+    enabled: false
+    cert_file: null
+    key_file: null
+
+# 连接管理配置
+connection:
+  # 连接池配置
+  pool:
+    max_connections: 1000      # 最大连接数
+    min_connections: 10        # 最小连接数
+    connection_timeout: 30     # 连接超时(秒)
+    idle_timeout: 300          # 空闲超时(秒)
+    max_lifetime: 3600         # 连接最大生存时间(秒)
+  
+  # 后端连接池
+  backend_pool:
+    max_connections_per_backend: 100
+    connection_timeout: 10
+    query_timeout: 30
+
+# 认证配置
+authentication:
+  # 支持的认证插件
+  plugins:
+    - "mysql_native_password"
+    - "caching_sha2_password"
+  
+  # 默认认证插件
+  default_plugin: "mysql_native_password"
+  
+  # 用户配置 (开发环境使用简单配置)
+  users:
+    root:
+      password: ""           # 空密码
+      host: "%"
+      privileges: ["ALL"]
+    test:
+      password: "test123"
+      host: "%"
+      privileges: ["SELECT", "INSERT", "UPDATE", "DELETE"]
+
+# 后端存储节点配置
+storage:
+  backends:
+    dn1:
+      type: "mysql"
+      host: "localhost"
+      port: 3306
+      username: "root"
+      password: ""
+      database: "hchdb_dn1"
+      max_connections: 50
+    dn2:
+      type: "mysql"
+      host: "localhost"
+      port: 3307
+      username: "root"
+      password: ""
+      database: "hchdb_dn2"
+      max_connections: 50
+
+# 路由配置
+routing:
+  # 默认路由策略
+  default_strategy: "round_robin"
+  
+  # 读写分离
+  read_write_split:
+    enabled: false
+    read_backends: ["dn1", "dn2"]
+    write_backends: ["dn1"]
+
+# 日志配置
+logging:
+  level: "DEBUG"
+  format: "json"          # json 或 text
+  output: "console"       # console 或 file
+  file_path: "logs/hchdb.log"
+  
+  # 日志组件级别
+  loggers:
+    hchdb.protocol: "DEBUG"
+    hchdb.connection: "INFO"
+    hchdb.routing: "INFO"
+    hchdb.storage: "INFO"
+
+# 监控配置
+monitoring:
+  # Prometheus指标
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+  
+  # 健康检查
+  health_check:
+    enabled: true
+    port: 8080
+    path: "/health"
+    interval: 30  # 健康检查间隔(秒)
+
+# 性能配置
+performance:
+  # I/O配置
+  io:
+    max_workers: 4           # I/O工作线程数
+    buffer_size: 8192        # 缓冲区大小
+    tcp_nodelay: true        # TCP_NODELAY选项
+    tcp_keepalive: true      # TCP_KEEPALIVE选项
+  
+  # 内存配置
+  memory:
+    max_connections_memory: "1GB"    # 连接内存限制
+    query_cache_size: "128MB"        # 查询缓存大小
+
+# 开发模式配置
+development:
+  debug: true
+  auto_reload: true          # 代码变更自动重载
+  mock_backends: false       # 是否使用模拟后端
+  
+  # 测试数据
+  test_data:
+    enabled: true
+    sample_tables: ["users", "orders", "products"]
